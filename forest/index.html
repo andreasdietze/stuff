@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></meta
+		<link rel='stylesheet' type='text/css' href='http://www.x3dom.org/x3dom/release/x3dom.css'></link>
+		<script type='text/javascript' src='http://www.x3dom.org/x3dom/release/x3dom.js'></script>
+		<style type="text/css">  
+		#trans { -webkit-animation: spin 8s infinite linear;  }  
+		@-webkit-keyframes spin {   
+			from { -webkit-transform: rotateY(0); }    
+			to { -webkit-transform: rotateY(-360deg); }  
+		}
+		</style>
+	</head>
+	<body>
+	<!-- X3D content starts here -->
+		<!-- Set resolution (width='100%' height='50%' is also possible)-->
+		<x3d id='someUniqueId' showLog='false' width='1024' height='768' order='0'>
+			<scene>
+				<!-- Set viewpoint (camera position and view distance zNear, zFar) -->
+				<Viewpoint id='vpp' DEF='vp' centerOfRotation="0 0 0" position="0 0 30" orientation="0 0 0 0" zNear="0.01" zFar="1000"></Viewpoint> 
+				
+				<!-- Background of the scene (world, sky)  -->
+				<background DEF='WO_World' groundColor='0.057 0.221 0.4' skyColor='0.057 0.221 0.4'></background>
+				
+				<!-- Target element for trees -->
+				<group id="trees">
+				</group>
+				
+				<!-- Car -->
+				<!-- Car driving in circles (rotation)    <transform style="-webkit-transform: rotateY(45deg);">-->
+				<transform DEF='rot'>
+				<!--<transform id="trans"> -->
+			    <!-- Translate the car away from center point (origin) -->
+				<transform translation="0 10 2">
+				
+				<!-- Car group -->
+				<group id='completecar' onclick="getRayColPnt(event)">
+				
+				<!-- Box for car  -->
+				<transform translation="0 0 0" scale="3 1.5 0.5">
+					<group DEF='car'>
+						<shape>
+							<appearance>
+								<material DEF='MA_Material' ambientIntensity='0.333' shininess='0.098' specularColor='0.401 0.401 0.401'></material>
+							</appearance>
+							<box></box>
+						</shape>
+					</group>
+				</transform>
+				
+				<!-- First wheel  -->
+				<transform translation="2.0 1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height"0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				
+				<!-- Second wheel -->
+				<transform translation="-2.0 1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height"0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				
+				<!-- Third wheel  -->
+				<transform translation="2.0 -1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height"0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				
+				<!-- Fourth wheel  -->
+				<transform translation="-2.0 -1.75 -0.5" scale="1, 0.25, 1">
+					<group DEF='wheels'>
+						<shape>
+							<appearance>
+								<material diffuseColor="red"></material>
+							</appearance>
+							<cylinder radius="1.0" height="0.5">
+							</cylinder>
+						</shape>
+					</group>
+				</transform>
+				
+				<!-- Close group car  -->
+				</group>
+				<!-- End transform translation  -->
+				</transform>
+				<!-- End transform rotation  -->
+				</transform>
+				
+				<!-- Santa´s house -->
+				<transform translation="0 0 0" scale="1 1 1" >
+					<shape>
+						<appearance>
+							<material emissiveColor='1 1 0' diffuseColor="red"/>
+						</appearance>
+						<!-- LineSet indicies => each index represents a point from the node coordinate -->
+						<IndexedLineSet DEF='ILS' coordIndex='0 1 2 3 4 5 6 7 8'>
+							<Coordinate DEF='TurnPoints' point='10 -10 1
+																-10 10 1
+																10 10 1
+																0 20 1
+																-10 10 1
+																-10 -10 1
+																10 -10 1
+																10 10 1
+																-10 -10 1 '/>
+						</IndexedLineSet>
+					</shape>
+				</transform> 
+				
+				<!-- Ground: a textured plane (2d square/rectangle).
+                     		 Textures can used via http url or file path.
+                             Local files are stored the html file folder.-->
+				<!--<transform scale='125 125 0'>
+					<shape>
+						<appearance>
+							<imageTexture url='ground.png'></imageTexture>
+						</appearance>
+						<Plane ccw='true' center='0,0,0' lit='false' metadata='X3DMetadataObject' 
+						       primType='['TRIANGLES']' size='2,2' solid='true' subdivision='1,1' 
+							   useGeoCache='true' ></Plane> 
+						</IndexedLineSet>
+					</shape>
+				</transform>
+				-->
+				
+				<Transform translation='0 0 0' scale='100 100 0' >
+					<Shape>
+						<Appearance>
+							<imageTexture url='ground.jpg'></imageTexture>
+						</Appearance>
+                        <IndexedFaceSet solid="false" coordIndex='0 2 3 0 1 2'>  <!-- 0 1 2 3 -1 -->
+                            <Coordinate point='-1 -1 0 1 -1 0 1 1 0 -1 1 0'></Coordinate> 
+                        </IndexedFaceSet >
+					</Shape>
+				</Transform> 
+				
+				<!-- First deer -->
+				<transform translation="-10 0 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				
+				<!-- Second deer -->
+				<transform translation="20 -10 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+				<transform rotation="0 1 0 1.7">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				</transform>
+				
+				<!-- Third deer -->
+				<transform translation="-33 12 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+				<transform rotation="0 1 0 2.7">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				</transform>
+				
+				<!-- Fourth deer -->
+				<transform translation="45 30 0" scale="2.5 2.5 2.5" rotation="1 0 0 1.57">
+				<transform rotation="0 1 0 0.7">
+					<inline url="Deer.x3d"></inline>
+				</transform>
+				</transform>
+
+				
+				<!-- Timer for car movement-->
+				<TimeSensor id="timesensor" DEF="TS" loop="true" cycleInterval="10" enable="true" ></TimeSensor>
+
+				<!-- Smooth rotation interpolation for the car.
+					 KeyValue rotation from zero to one PI to 2PI -->
+				<OrientationInterpolator id="rotinter" DEF="OI" key="0 0.5 1" keyValue="0 0 1 0, 0 0 1 3.14159, 0 0 1 6.28318" ></OrientationInterpolator>
+				<ROUTE fromNode='TS' fromField='fraction_changed' toNode='OI' toField='set_fraction'></ROUTE>
+				<ROUTE fromNode='OI' fromField='value_changed' toNode='rot' toField='set_rotation'/></ROUTE>
+				
+				
+				
+				<transform translation="0 0 0" scale="3 1.5 0.5">
+					<shape onclick="getRayColPnt(event)">
+						<appearance>
+							<material DEF='MA_Material' ambientIntensity='0.333' shininess='0.098' specularColor='0.401 0.401 0.401'></material>
+						</appearance>
+						<box></box>
+					</shape>
+				</transform>
+				
+				
+				<!-- JavaScript content starts here (content can be manipulated during runtime) -->
+				<script type="text/javascript">
+				
+				// Call this function to initialize the forest when calling the html document
+				document.onload = function(){
+				// Create whole forest
+					createForest();
+					
+					// Stop/Start car circling (click on the car)
+					document.getElementById('completecar').addEventListener('click', function(){
+						document.getElementById('timesensor').setAttribute('loop', 'false');
+					}, false)
+				};
+					
+				
+				// z = up ! 
+				function getRayColPnt(event){
+					// Get hit point by 3 component array
+					var hit = event.hitPnt;
+					console.log(hit);
+					
+					// Set a new vector3 for further computation
+					var hitVec = new x3dom.fields.SFVec3f(hit[0], hit[1], hit[2]);
+					console.log(hitVec);
+				}
+					
+				// Function to create a trunk (params: random x and y position)
+				function createCylinder(xPos, yPos){
+					// Get the target node
+					var group = document.getElementById('trees');
+					
+					// Create transform node to apply the random position and other transformations
+					var transCy = document.createElement('transform');
+					// Set id attribute for the translation node
+					transCy.setAttribute('id', 'transCy');
+					
+					// Define the final translation
+					var finTrans = xPos + ' ' + yPos + ' 2.5';
+					// Set the translation
+					transCy.setAttribute('translation', finTrans );
+					// Set the scale (size)
+					transCy.setAttribute('scale', '1 5 1');
+					// Set rotation on X for 180° (or half pi) to straighten the trunk
+					transCy.setAttribute('rotation', '1 0 0 1.57');
+					
+					// Create shape node
+					var shapeCy = document.createElement('shape');
+					
+					// Create appearance node
+					var appearCy = document.createElement('appearance');
+
+					// Crteate material node
+					var matCy = document.createElement('material');
+					// And set color properties
+					matCy.setAttribute('diffuseColor', 'brown');
+					
+					// Create the cylinder spezified by x3dom
+					var cylinder = document.createElement('cylinder');
+					// And set the properties for radius and height
+					cylinder.setAttribute('radius', '0.5');
+					cylinder.setAttribute('height', '1.0');
+					
+					// Append all nodes to its parent. Remeber, root is the group with id = trees!
+					group.appendChild(transCy);
+					transCy.appendChild(shapeCy);
+					shapeCy.appendChild(appearCy);
+					appearCy.appendChild(matCy);
+					shapeCy.appendChild(cylinder);
+				}
+				
+				/* Function to create the top for a trunk
+				   params: random x and y position, random scale x and y)*/
+				function createCone(xPos, yPos, scaleX, scaleY){
+					// Get the target node
+					var group = document.getElementById('trees');
+					
+					// Create transform node to apply the random position and scale
+					var transCo = document.createElement('transform');
+					// Set id attribute for the translation node
+					transCo.setAttribute('id', 'transCo');
+					
+					// Define the final translation
+					var finTrans = xPos + ' ' + yPos + ' 6.0';
+					// Set the translation
+					transCo.setAttribute('translation', finTrans);
+					// Define the final scale
+					var finScale = scaleX + ' ' + scaleY + ' ' + scaleX;
+					// Set the scale
+					transCo.setAttribute('scale', finScale);   // 2 4 2
+					// Set rotation on X for 180° (or half pi) to straighten the cone of the trunk
+					transCo.setAttribute('rotation', '1 0 0 1.57');
+					
+					// Create shape node
+					var shapeCo = document.createElement('shape');
+					
+					// Create appearance node
+					var appearCo = document.createElement('appearance');
+
+					// Create material node
+					var matCo = document.createElement('material');
+					// And set color properties
+					matCo.setAttribute('diffuseColor', 'green');
+					
+					// Create the cylinder spezified by x3dom
+					var cone = document.createElement('cone');
+					
+					// Append all nodes to its parent. Remeber, root is the group with id = trees!
+					group.appendChild(transCo);
+					transCo.appendChild(shapeCo);
+					shapeCo.appendChild(appearCo);
+					appearCo.appendChild(matCo);
+					shapeCo.appendChild(cone);
+				}
+					
+				// Function to create multiple trees.
+				function createForest(){
+					var i, xPos, yPos, scaleX, scaleY;
+					
+					// Max tree count
+					var count = 100;
+					
+					// Max range for a single tree (position: range * random between 0 and 1)
+					var range = 200;
+					
+					// Offset for each tree to center it 
+					var offset = range / 2;
+
+					// Create trees in a for loop and create for each tree a random position
+					for(i = 0; i < count; i++)
+					{
+						// Random x and y position
+						xPos = Math.floor((Math.random() * range) + 1) - offset;
+						yPos = Math.floor((Math.random() * range) + 1) - offset;
+						
+						// Random x and y scale for the cones
+						scaleX = Math.floor((Math.random() * 4) + 2);
+						scaleY = Math.floor((Math.random() * 5) + 1);
+						
+						// Trees should be placed around the left and right side of the axis origin,
+						// so we place every odd tree on the left and every even tree on the right side.
+						if(i % 2 == 0){
+							xPos *= (-1);
+							yPos *= (-1);
+						}
+						
+						// Create trunk
+						createCylinder(xPos, yPos);
+						// Create cone
+						createCone(xPos, yPos, scaleX, scaleY);
+					} // CLOSE FOR LOOP !!!
+				}
+				</script> <!-- JavaScript ends here -->
+			</scene>
+		</x3d> <!-- X3D ends here -->	
+	</body>
+</html>
