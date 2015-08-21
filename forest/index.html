@@ -193,16 +193,16 @@
 				<ROUTE fromNode='OI' fromField='value_changed' toNode='rot' toField='set_rotation'/></ROUTE>
 				
 				
-				
-				<transform translation="0 0 0" scale="3 1.5 0.5">
-					<shape onclick="getRayColPnt(event)">
-						<appearance>
-							<material DEF='MA_Material' ambientIntensity='0.333' shininess='0.098' specularColor='0.401 0.401 0.401'></material>
-						</appearance>
-						<box></box>
-					</shape>
-				</transform>
-				
+				<group id="rayCube">
+					<transform translation="0 0 0" scale="3 1.5 0.5">
+						<shape > <!-- onclick="getRayColPnt(event)" -->
+							<appearance>
+								<material DEF='MA_Material' ambientIntensity='0.333' shininess='0.098' specularColor='0.401 0.401 0.401'></material>
+							</appearance>
+							<box></box>
+						</shape>
+					</transform>
+				</group>
 				
 				<!-- JavaScript content starts here (content can be manipulated during runtime) -->
 				<script type="text/javascript">
@@ -216,10 +216,14 @@
 					document.getElementById('completecar').addEventListener('click', function(){
 						document.getElementById('timesensor').setAttribute('loop', 'false');
 					}, false)
+					
+					// Get ray hit point by adding a event listener to the object
+					document.getElementById('rayCube').addEventListener('click', function(event){
+						var hit = event.hitPnt;
+						console.log(hit);
+					}, false)
 				};
 					
-				
-				// z = up ! 
 				function getRayColPnt(event){
 					// Get hit point by 3 component array
 					var hit = event.hitPnt;
